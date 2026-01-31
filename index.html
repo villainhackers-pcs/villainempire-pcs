@@ -1,0 +1,254 @@
+<!-- ==========================
+========================== -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Listings | VILLAIN INDUSTRY</title>
+  <style>
+    * { margin:0; padding:0; }
+    html, body { width:100%; height:100%; overflow-x:hidden; }
+    body { 
+      margin:0; 
+      font-family:'Courier New',monospace; 
+      background:#0a0e15; 
+      color:#56be2abf; 
+      position:relative;
+      overflow-y:auto;
+    }
+    
+    /* Matrix background */
+    #matrix-canvas {
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      z-index:1;
+      opacity:0.15;
+      pointer-events:none;
+    }
+    
+    /* Grid overlay */
+    body::before {
+      content:'';
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background-image:
+        linear-gradient(0deg, transparent 24%, rgba(5, 5, 5, 0.05) 25%, rgba(0,255,65,.05) 26%, transparent 27%, transparent 74%, rgba(0,255,65,.05) 75%, rgba(0,255,65,.05) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, rgba(9, 9, 9, 0.825) 25%, rgba(0,255,65,.05) 26%, transparent 27%, transparent 74%, rgba(0,255,65,.05) 75%, rgba(0,255,65,.05) 76%, transparent 77%, transparent);
+      background-size:50px 50px;
+      z-index:2;
+      pointer-events:none;
+    }
+    
+    body > * { position:relative; z-index:3; }
+    
+    header, footer { background:#05070b; padding:20px 60px; border-bottom:1px solid rgba(0,255,65,0.3); box-shadow:0 0 20px rgba(0,255,65,0.1); }
+    section { padding:60px; position:relative; z-index:3; }
+    h1 { text-shadow:0 0 10px #00ff41, 0 0 20px #f911e6; color:#00ff41; letter-spacing:2px; }
+    h2 { text-shadow:0 0 8px #32a5e8; color:#00ff41; margin-bottom:20px; }
+    
+    .filters button { margin-right:10px; padding:10px 15px; background:#111521; color:#00ff41; border:1px solid rgba(0,255,65,0.3); cursor:pointer; border-radius:4px; transition:all 0.3s; font-family:'Courier New',monospace; }
+    .filters button:hover { background:#00ff41; color:#0a0e15; border-color:#00ff41; box-shadow:0 0 15px rgba(0,255,65,0.6); }
+    
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:30px; margin-top:40px; }
+    .card { background:rgba(17,21,33,0.7); padding:20px; border-radius:4px; border:1px solid rgba(0,255,65,0.2); transition:all 0.3s; box-shadow:0 0 10px rgba(0,255,65,0.1); }
+    .card:hover { border-color:rgba(0,255,65,0.6); box-shadow:0 0 20px rgba(0,255,65,0.3); background:rgba(0,255,65,0.05); }
+    /* YouTube section */
+    .yt-section { padding:40px 60px; border-top:1px solid rgba(0,255,65,0.3); }
+    .yt-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; margin-top:20px; }
+    .yt-grid > div { border:1px solid rgba(0,255,65,0.2); border-radius:4px; overflow:hidden; box-shadow:0 0 10px rgba(0,255,65,0.1); transition:all 0.3s; }
+    .yt-grid > div:hover { border-color:rgba(0,255,65,0.6); box-shadow:0 0 20px rgba(0,255,65,0.3); }
+    .yt-grid iframe{ width:100%; height:200px; border:0; border-radius:2px; }
+    .owner { font-size:14px; color:#00ff41; margin-top:6px; text-shadow:0 0 5px rgba(0,255,65,0.5); }
+    /* Owner Profile */
+    .owner-card { display:flex; align-items:center; gap:20px; margin-top:15px; background:rgba(0,255,65,0.05); padding:20px; border-radius:6px; border:1px solid rgba(0,255,65,0.3); }
+    .owner-photo { width:100px; height:100px; border-radius:50%; border:2px solid rgba(0,255,65,0.6); object-fit:cover; box-shadow:0 0 15px rgba(0,255,65,0.4); }
+    .owner-info { flex:1; }
+    .owner-name { font-size:18px; color:#00ff41; font-weight:bold; text-shadow:0 0 8px rgba(0,255,65,0.6); margin:0; }
+    .owner-title { font-size:12px; color:#00aa00; margin-top:4px; }
+    /* Navigation */
+    nav { display:flex; gap:15px; margin-top:15px; }
+    nav a { color:#00ff41; text-decoration:none; padding:8px 15px; border:1px solid rgba(0,255,65,0.3); border-radius:4px; transition:all 0.3s; font-size:14px; }
+    nav a:hover { background:#00ff41; color:#0a0e15; border-color:#961113; box-shadow:0 0 15px rgba(0,255,65,0.6); }  
+  </style>
+</head>
+<body>
+<!-- Matrix rain canvas -->
+<canvas id="matrix-canvas"></canvas>
+<header>
+  <h1>VILLAIN HACKERS</h1>
+  <nav>
+    <a href="cybersecurity.html">Cybersecurity Services</a>
+    <a href="dark-web.html">Dark Web & Tor</a>
+    <a href="villain-codes.html">Villain Codes</a>
+    <a href="villain-software.html">Villain Software</a>
+    <a href="villain-os.html">Villain OS</a>    <a href="villain-os-gui.html"> GUI</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <div class="owner-card">
+    <img src="C:\Users\asus\Downloads\IMG_3609.jpg" alt="Owner" class="owner-photo">
+    <div class="owner-info">
+      <p class="owner-name">PREMCHANDRA SINGH JATAV</p>
+      <p class="owner-title">Founder & Security Expert</p>
+    </div>
+  </div>
+</header>
+
+
+<section>
+  <h2>Security Listings</h2>
+
+
+  <div class="filters">
+    <button onclick="filter('all')">All</button>
+    <button onclick="filter('web')">Web</button>
+    <button onclick="filter('network')">Network</button>
+    <button onclick="filter('cloud')">Cloud</button>
+  </div>
+
+
+  <div class="grid" id="listings">
+    <a href="web-audit.html" style="text-decoration:none; color:inherit;">
+      <div class="card web">Web App Vulnerability Audit</div>
+    </a>
+    <div class="card network">Corporate Network Pen Test</div>
+    <div class="card cloud">Cloud Infrastructure Review</div>
+    <div class="card web">API Security Assessment</div>
+  </div>
+</section>
+
+
+<section class="yt-section" id="youtube">
+  <h2>Watch: Our YouTube Channel</h2>
+
+  <!-- YouTube subscribe button (replace YOUR_CHANNEL_ID below) -->
+  <div style="margin:10px 0">
+    <script src="https://apis.google.com/js/platform.js"></script>
+    <div class="g-ytsubscribe" data-channelid="UClk16hQnwL6N2Nr0Et4pWaQ" data-layout="default" data-count="default"></div>
+  </div>
+
+  <!-- Container where latest videos will be injected -->
+  <div id="yt-videos" class="yt-grid">Loading videos...</div>
+
+  <!-- If you don't want to use the API, replace with an iframe to your channel page or a playlist embed -->
+  <!-- Example fallback (uncomment and replace CHANNEL_ID):
+  <iframe src="https://www.youtube.com/embed?listType=user_uploads&list=CHANNEL_ID" allowfullscreen></iframe>
+  -->
+
+  <!--
+    Instructions:
+    1) Get an API key at https://console.developers.google.com/apis/credentials and enable YouTube Data API v3.
+    2) Replace `API_KEY` and `CHANNEL_ID` in the script below.
+  -->
+</section>
+<section class="yt-section" id="instagram">
+  <h2>Visit our  Instagram page </h2>
+  <p>Connect with us on Instagram for security tips and updates.</p>
+  <a href="https://www.instagram.com/mr_devil_villain_/" target="_blank" style="color:#1eb44e; text-decoration:none; border:1px solid rgba(0,255,65,0.3); padding:10px 20px; border-radius:4px; display:inline-block; margin-top:10px; transition:all 0.3s;">Visit Instagram</a>
+  <a href="https://chat.whatsapp.com/CBvP9TWgeMeC0PoM2JlXer" target="_blank" style="color:#1eb44e; text-decoration:none; border:1px solid rgba(0,255,65,0.3); padding:10px 20px; border-radius:4px; display:inline-block; margin-top:10px; margin-left:10px; transition:all 0.3s;">Join WhatsApp Community</a>
+  <a href="https://whatsapp.com/channel/0029Vb7PfuMKQuJFUUPxfy2p" target="_blank" style="color:#1eb44e; text-decoration:none; border:1px solid rgba(0,255,65,0.3); padding:10px 20px; border-radius:4px; display:inline-block; margin-top:10px; margin-left:10px; transition:all 0.3s;">Join WhatsApp Channel</a>
+</section>
+
+<footer>
+  Confidential. Professional. Legal.
+</footer>
+
+
+<script>
+  function filter(type){
+    document.querySelectorAll('.card').forEach(card=>{
+      card.style.display = (type==='all'||card.classList.contains(type)) ? 'block' : 'none';
+    });
+  }
+
+  // --- YouTube fetcher (requires API key + channel ID) ---
+  (function(){
+    const API_KEY = 'YOUR_API_KEY'; // <-- replace
+    const CHANNEL_ID = 'UClk16hQnwL6N2Nr0Et4pWaQ'; // <-- replace
+    const MAX = 6;
+    const container = document.getElementById('yt-videos');
+
+    if(!API_KEY || API_KEY.startsWith('YOUR_')){
+      container.innerHTML = '<p style="color:#00ff41; text-shadow:0 0 8px rgba(0,255,65,0.6); font-size:16px;"><strong>VILLAIN HACKER ON YOUTUBE <a href="https://www.youtube.com/channel/'+CHANNEL_ID+'" target="_blank" style="color:#00ff41; text-decoration:underline; cursor:pointer;">CLICK HERE</a></strong></p>';
+      return;
+    }
+
+    // Get uploads playlist id for channel
+    fetch(`https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${CHANNEL_ID}&key=${API_KEY}`)
+      .then(res=>res.json())
+      .then(data=>{
+        const uploads = data.items && data.items[0] && data.items[0].contentDetails && data.items[0].contentDetails.relatedPlaylists && data.items[0].contentDetails.relatedPlaylists.uploads;
+        if(!uploads) throw new Error('Uploads playlist not found');
+        return fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploads}&maxResults=${MAX}&key=${API_KEY}`);
+      })
+      .then(res=>res.json())
+      .then(list=>{
+        if(!list.items || !list.items.length) throw new Error('No videos found');
+        container.innerHTML = '';
+        list.items.forEach(item=>{
+          const vid = item.snippet.resourceId.videoId;
+          const title = item.snippet.title;
+          const div = document.createElement('div');
+          div.innerHTML = `<iframe src="https://www.youtube.com/embed/${vid}" title="${title}" allowfullscreen></iframe>`;
+          container.appendChild(div);
+        });
+      })
+      .catch(err=>{
+        container.innerHTML = '<p style="color:#ccc">Could not load videos: '+(err.message||err) +'.</p>' +
+          '<p style="color:#ccc">Fallback: <a href="https://www.youtube.com/channel/'+CHANNEL_ID+'" target="_blank">Visit channel</a></p>';
+      });
+  })();
+
+  // --- Matrix rain animation ---
+  (function(){
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const chars = '01@*$^#&@*P@R#E$M%C^H&A*N@D$R*A!+_)(*&^%$#@}"?>{:><|}")@%#UDGI#$#@@*&@QP';
+    const fontSize = 16;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(0);
+    
+    function draw() {
+      ctx.fillStyle = 'rgba(10, 14, 21, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      ctx.fillStyle = '#00ff41';
+      ctx.font = fontSize + 'px monospace';
+      ctx.globalAlpha = 0.8;
+      
+      for (let i = 0; i < drops.length; i++) {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+        ctx.fillText(char, x, y);
+        
+        if (y > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+      
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(draw);
+    }
+    
+    draw();
+    
+    // Resize canvas on window resize
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  })();
+</script>
+</body>
+</html>
