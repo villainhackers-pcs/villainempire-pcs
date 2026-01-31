@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Web App Vulnerability Audit | VILLAIN HACKERS</title>
+  <style>
+    * { margin:0; padding:0; }
+    html, body { width:100%; height:100%; overflow-x:hidden; }
+    body { 
+      margin:0; 
+      font-family:'Courier New',monospace; 
+      background:#0a0e15; 
+      color:#00ff41; 
+      position:relative;
+      overflow-y:auto;
+    }
+    
+    /* Matrix background */
+    #matrix-canvas {
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      z-index:1;
+      opacity:0.15;
+      pointer-events:none;
+    }
+    
+    /* Grid overlay */
+    body::before {
+      content:'';
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background-image:
+        linear-gradient(0deg, transparent 24%, rgba(0,255,65,.05) 25%, rgba(0,255,65,.05) 26%, transparent 27%, transparent 74%, rgba(0,255,65,.05) 75%, rgba(0,255,65,.05) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, rgba(0,255,65,.05) 25%, rgba(0,255,65,.05) 26%, transparent 27%, transparent 74%, rgba(0,255,65,.05) 75%, rgba(0,255,65,.05) 76%, transparent 77%, transparent);
+      background-size:50px 50px;
+      z-index:2;
+      pointer-events:none;
+    }
+    
+    body > * { position:relative; z-index:3; }
+    
+    header { background:#05070b; padding:20px 60px; border-bottom:1px solid rgba(0,255,65,0.3); box-shadow:0 0 20px rgba(0,255,65,0.1); }
+    footer { background:#05070b; padding:20px 60px; border-top:1px solid rgba(0,255,65,0.3); box-shadow:0 0 20px rgba(0,255,65,0.1); }
+    section { padding:60px; position:relative; z-index:3; border-bottom:1px solid rgba(0,255,65,0.2); }
+    
+    h1 { text-shadow:0 0 10px #00ff41, 0 0 20px #00ff41; color:#00ff41; letter-spacing:2px; margin-bottom:10px; }
+    h2 { text-shadow:0 0 8px #00ff41; color:#00ff41; margin:30px 0 20px 0; font-size:20px; }
+    h3 { color:#00ff41; margin:20px 0 10px 0; font-size:16px; }
+    
+    nav { display:flex; gap:15px; margin-top:15px; }
+    nav a { color:#00ff41; text-decoration:none; padding:8px 15px; border:1px solid rgba(0,255,65,0.3); border-radius:4px; transition:all 0.3s; font-size:14px; }
+    nav a:hover { background:#00ff41; color:#0a0e15; border-color:#00ff41; box-shadow:0 0 15px rgba(0,255,65,0.6); }
+    
+    p { margin:12px 0; line-height:1.6; color:#e6e6e6; }
+    
+    .highlight { color:#00ff41; font-weight:bold; text-shadow:0 0 5px rgba(0,255,65,0.5); }
+    
+    .vulnerability-list { list-style:none; margin:20px 0; }
+    .vulnerability-list li { padding:15px; margin:10px 0; background:rgba(0,255,65,0.05); border-left:4px solid rgba(0,255,65,0.6); color:#e6e6e6; }
+    .vulnerability-list li::before { content:'⚠️ '; margin-right:10px; }
+    
+    .methodology { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; margin-top:30px; }
+    .method-card { background:rgba(17,21,33,0.7); padding:25px; border:1px solid rgba(0,255,65,0.3); border-radius:4px; transition:all 0.3s; }
+    .method-card:hover { border-color:rgba(0,255,65,0.6); box-shadow:0 0 20px rgba(0,255,65,0.3); background:rgba(0,255,65,0.05); }
+    .method-number { display:inline-block; width:40px; height:40px; background:rgba(0,255,65,0.2); border:2px solid rgba(0,255,65,0.6); border-radius:50%; text-align:center; line-height:36px; margin-bottom:15px; color:#00ff41; font-weight:bold; }
+    
+    .testing-types { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; margin-top:30px; }
+    .test-type { background:rgba(0,255,65,0.08); padding:20px; border:1px solid rgba(0,255,65,0.4); border-radius:4px; }
+    .test-type h4 { color:#00ff41; margin-bottom:10px; font-size:15px; }
+    
+    .ethical-box { background:rgba(0,150,100,0.15); padding:25px; border:2px solid rgba(0,255,65,0.4); border-radius:4px; margin:30px 0; }
+    .ethical-box h3 { color:#00ff41; margin-top:0; }
+    
+    .cta-button { display:inline-block; margin-top:20px; padding:12px 30px; background:#00ff41; color:#0a0e15; text-decoration:none; border-radius:4px; font-weight:bold; transition:all 0.3s; cursor:pointer; border:none; font-size:14px; }
+    .cta-button:hover { box-shadow:0 0 20px rgba(0,255,65,0.8); transform:scale(1.05); }
+    
+    .timeline { position:relative; margin:30px 0; padding:20px; }
+    .timeline-item { margin:20px 0; padding-left:40px; position:relative; }
+    .timeline-item::before { content:''; position:absolute; left:0; top:0; width:20px; height:20px; background:rgba(0,255,65,0.6); border-radius:50%; border:2px solid #00ff41; }
+    .timeline-item::after { content:''; position:absolute; left:9px; top:20px; width:2px; height:calc(100% + 20px); background:rgba(0,255,65,0.3); }
+    .timeline-item:last-child::after { display:none; }
+    
+    table { width:100%; border-collapse:collapse; margin:20px 0; }
+    table th, table td { padding:12px; text-align:left; border-bottom:1px solid rgba(0,255,65,0.2); }
+    table th { background:rgba(0,255,65,0.1); color:#00ff41; }
+    table tr:hover { background:rgba(0,255,65,0.05); }
+    
+    .code-block { background:#000; padding:15px; border:1px solid rgba(0,255,65,0.3); border-radius:4px; margin:15px 0; overflow-x:auto; font-size:12px; }
+  </style>
+</head>
+<body>
+<canvas id="matrix-canvas"></canvas>
+
+<header>
+  <h1>🔍 WEB APPLICATION VULNERABILITY AUDIT</h1>
+  <p style="color:#00aa00; margin-top:5px;">Ethical Hacking & Security Assessment</p>
+  <nav>
+    <a href="web 1.html">← Back Home</a>
+    <a href="cybersecurity.html">Services</a>
+    <a href="dark-web.html">Dark Web & Tor</a>
+    <a href="#methodology">Methodology</a>
+    <a href="#testing">Testing Types</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section>
+  <h2>What is Web App Vulnerability Audit?</h2>
+  <p>A comprehensive security assessment of your web application to identify, analyze, and document security weaknesses before malicious actors exploit them. Our <span class="highlight">ethical hacking</span> team uses industry-standard methodologies and cutting-edge tools to test your application from the attacker's perspective.</p>
+  
+  <p><strong>Why it matters:</strong> Web applications are the primary target for cyber attacks. A single vulnerability can lead to data breaches, financial loss, reputational damage, and regulatory penalties.</p>
+
+  <h3>Common Web App Vulnerabilities We Test For:</h3>
+  <ul class="vulnerability-list">
+    <li><strong>SQL Injection (SQLi)</strong> - Attackers inject malicious SQL commands to bypass authentication, extract databases, or execute arbitrary code</li>
+    <li><strong>Cross-Site Scripting (XSS)</strong> - Malicious scripts injected into web pages to steal user data or hijack sessions</li>
+    <li><strong>Cross-Site Request Forgery (CSRF)</strong> - Unauthorized actions performed on behalf of authenticated users</li>
+    <li><strong>Broken Authentication</strong> - Weak password policies, session management flaws, and credential exposure</li>
+    <li><strong>Sensitive Data Exposure</strong> - Unencrypted transmission of personal data, API keys, and confidential information</li>
+    <li><strong>XML External Entity (XXE)</strong> - XML processors exploited to disclose files or conduct denial-of-service attacks</li>
+    <li><strong>Broken Access Control</strong> - Users accessing resources they shouldn't have permission to view or modify</li>
+    <li><strong>Security Misconfiguration</strong> - Default credentials, unnecessary services, unpatched systems, and improper headers</li>
+    <li><strong>Insecure Deserialization</strong> - Malicious objects executed during deserialization processes</li>
+    <li><strong>Using Components with Known Vulnerabilities</strong> - Outdated libraries and frameworks with publicly disclosed exploits</li>
+  </ul>
+</section>
+
+<section id="methodology">
+  <h2>Our Testing Methodology</h2>
+  <p>We follow <span class="highlight">OWASP Top 10</span>, <span class="highlight">NIST</span>, and <span class="highlight">PTES (Penetration Testing Execution Standard)</span> frameworks to ensure thorough and professional assessments.</p>
+
+  <div class="methodology">
+    <div class="method-card">
+      <div class="method-number">1</div>
+      <h3>Reconnaissance</h3>
+      <p>Gather intelligence about your application: technology stack, architecture, endpoints, API documentation, and potential attack surfaces.</p>
+    </div>
+    <div class="method-card">
+      <div class="method-number">2</div>
+      <h3>Scanning & Enumeration</h3>
+      <p>Use automated tools to identify open ports, services, technology versions, and known vulnerabilities in dependencies.</p>
+    </div>
+    <div class="method-card">
+      <div class="method-number">3</div>
+      <h3>Vulnerability Assessment</h3>
+      <p>Manual testing for logic flaws, business logic vulnerabilities, and issues missed by automated scanners.</p>
+    </div>
+    <div class="method-card">
+      <div class="method-number">4</div>
+      <h3>Exploitation</h3>
+      <p>Ethically exploit discovered vulnerabilities to demonstrate real-world impact and severity (with permission).</p>
+    </div>
+    <div class="method-card">
+      <div class="method-number">5</div>
+      <h3>Reporting</h3>
+      <p>Comprehensive documentation with findings, risk ratings (CVSS), proof-of-concept exploits, and remediation guidance.</p>
+    </div>
+    <div class="method-card">
+      <div class="method-number">6</div>
+      <h3>Remediation Review</h3>
+      <p>Post-fix verification testing to confirm vulnerabilities are properly patched and no new issues introduced.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:40px;">Testing Timeline</h3>
+  <div class="timeline">
+    <div class="timeline-item">
+      <strong>Week 1: Scope Definition & Reconnaissance</strong>
+      <p>Define testing scope, identify target systems, gather initial intelligence.</p>
+    </div>
+    <div class="timeline-item">
+      <strong>Week 2-3: Active Scanning & Manual Testing</strong>
+      <p>Run vulnerability scanners, perform hands-on testing, identify vulnerabilities.</p>
+    </div>
+    <div class="timeline-item">
+      <strong>Week 4: Exploitation & Validation</strong>
+      <p>Confirm findings, test exploitability, measure business impact.</p>
+    </div>
+    <div class="timeline-item">
+      <strong>Week 5: Report Generation</strong>
+      <p>Document all findings with severity ratings, remediation steps, and executive summary.</p>
+    </div>
+    <div class="timeline-item">
+      <strong>Week 6: Remediation Support & Retest</strong>
+      <p>Assist with fixes, retest patched vulnerabilities, verify security posture improvement.</p>
+    </div>
+  </div>
+</section>
+
+<section id="testing">
+  <h2>Testing Techniques We Use</h2>
+  
+  <div class="testing-types">
+    <div class="test-type">
+      <h4>🔐 Input Validation Testing</h4>
+      <p>Test form fields, URL parameters, headers, and cookies for injection attacks (SQLi, Command Injection, XPath Injection).</p>
+    </div>
+    <div class="test-type">
+      <h4>🔑 Authentication Testing</h4>
+      <p>Evaluate password policies, session management, multi-factor authentication, remember-me functions, and logout mechanisms.</p>
+    </div>
+    <div class="test-type">
+      <h4>🛡️ Authorization Testing</h4>
+      <p>Verify access controls - test privilege escalation, horizontal/vertical authorization flaws, and role-based access.</p>
+    </div>
+    <div class="test-type">
+      <h4>📱 API Security Testing</h4>
+      <p>Assess REST/GraphQL APIs for broken authentication, rate limiting, sensitive data exposure, and improper error handling.</p>
+    </div>
+    <div class="test-type">
+      <h4>🗄️ Database Security</h4>
+      <p>Test database access controls, SQL injection, privilege escalation, and backup security.</p>
+    </div>
+    <div class="test-type">
+      <h4>🔍 Business Logic Testing</h4>
+      <p>Identify flaws in application workflows - price manipulation, payment bypass, and abuse of legitimate features.</p>
+    </div>
+    <div class="test-type">
+      <h4>📡 Client-Side Security</h4>
+      <p>Test for DOM-based XSS, insecure localStorage/sessionStorage, unsafe deserialization, and client-side validation bypasses.</p>
+    </div>
+    <div class="test-type">
+      <h4>🔒 Cryptography & HTTPS</h4>
+      <p>Verify encryption algorithms, key management, certificate validation, and secure data transmission.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:40px;">Tools & Technologies We Use</h3>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-top:20px;">
+    <div style="background:rgba(0,255,65,0.08); padding:15px; border-radius:4px; border-left:3px solid rgba(0,255,65,0.6);">
+      <strong style="color:#00ff41;">Burp Suite Pro</strong>
+      <p style="font-size:12px; margin-top:5px;">Web app security testing platform</p>
+    </div>
+    <div style="background:rgba(0,255,65,0.08); padding:15px; border-radius:4px; border-left:3px solid rgba(0,255,65,0.6);">
+      <strong style="color:#00ff41;">OWASP ZAP</strong>
+      <p style="font-size:12px; margin-top:5px;">Vulnerability scanning & fuzzing</p>
+    </div>
+    <div style="background:rgba(0,255,65,0.08); padding:15px; border-radius:4px; border-left:3px solid rgba(0,255,65,0.6);">
+      <strong style="color:#00ff41;">SQLMap</strong>
+      <p style="font-size:12px; margin-top:5px;">SQL injection detection & exploitation</p>
+    </div>
+    <div style="background:rgba(0,255,65,0.08); padding:15px; border-radius:4px; border-left:3px solid rgba(0,255,65,0.6);">
+      <strong style="color:#00ff41;">Postman</strong>
+      <p style="font-size:12px; margin-top:5px;">API testing & security validation</p>
+    </div>
+    <div style="background:rgba(0,255,65,0.08); padding:15px; border-radius:4px; border-left:3px solid rgba(0,255,65,0.6);">
+      <strong style="color:#00ff41;">Nmap & Nessus</strong>
+      <p style="font-size:12px; margin-top:5px;">Network & infrastructure scanning</p>
+    </div>
+    <div style="background:rgba(0,255,65,0.08); padding:15px; border-radius:4px; border-left:3px solid rgba(0,255,65,0.6);">
+      <strong style="color:#00ff41;">Wireshark</strong>
+      <p style="font-size:12px; margin-top:5px;">Network traffic analysis</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Ethical Hacking & Legal Framework</h2>
+  
+  <div class="ethical-box">
+    <h3>Our Commitment to Ethics & Legality</h3>
+    <p><span class="highlight">Ethical Hacking</span> means we test for vulnerabilities with your explicit written authorization. All testing is:</p>
+    <ul style="margin-top:15px; margin-left:20px; color:#e6e6e6;">
+      <li>✓ <strong>Authorized</strong> - Testing only with signed contracts and explicit scope approval</li>
+      <li>✓ <strong>Non-Destructive</strong> - We identify vulnerabilities without causing disruption or data corruption</li>
+      <li>✓ <strong>Confidential</strong> - All findings are reported securely and kept strictly confidential</li>
+      <li>✓ <strong>Professional</strong> - We follow industry standards (OWASP, NIST, PTES)</li>
+      <li>✓ <strong>Legal</strong> - Fully compliant with CFAA, GDPR, and regional cybersecurity laws</li>
+    </ul>
+  </div>
+
+  <h3>Ethical Hacking vs. Illegal Hacking</h3>
+  <table>
+    <tr>
+      <th>Aspect</th>
+      <th>Ethical Hacker</th>
+      <th>Malicious Hacker</th>
+    </tr>
+    <tr>
+      <td><strong>Authorization</strong></td>
+      <td>Explicit written permission</td>
+      <td>Unauthorized access</td>
+    </tr>
+    <tr>
+      <td><strong>Intent</strong></td>
+      <td>Improve security</td>
+      <td>Steal/damage/disrupt</td>
+    </tr>
+    <tr>
+      <td><strong>Disclosure</strong></td>
+      <td>Confidential reporting</td>
+      <td>Public exploitation or ransom</td>
+    </tr>
+    <tr>
+      <td><strong>Data Handling</strong></td>
+      <td>Never extracted/retained</td>
+      <td>Stolen and sold</td>
+    </tr>
+    <tr>
+      <td><strong>Scope</strong></td>
+      <td>Limited to agreed targets</td>
+      <td>Unrestricted attacks</td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <h2>Deliverables</h2>
+  <p>Each vulnerability audit includes:</p>
+  <ul class="vulnerability-list" style="margin-top:20px;">
+    <li><strong>Executive Summary</strong> - High-level overview of findings and risk exposure</li>
+    <li><strong>Detailed Technical Report</strong> - Each vulnerability with CVSS score, proof-of-concept, and remediation steps</li>
+    <li><strong>Vulnerability Prioritization</strong> - Risk-based roadmap for fixing issues</li>
+    <li><strong>Remediation Guidance</strong> - Code examples and best practices for secure development</li>
+    <li><strong>Post-Fix Verification</strong> - Retest to confirm patches are effective</li>
+    <li><strong>Security Recommendations</strong> - Long-term security improvements and training needs</li>
+  </ul>
+</section>
+
+<section id="contact">
+  <h2>Ready to Secure Your Web Application?</h2>
+  <p>Don't wait for attackers to find your vulnerabilities. Our ethical hacking team is ready to help you fortify your web application.</p>
+  
+  <h3>Contact VILLAIN HACKERS Today</h3>
+  <p style="margin-top:15px;">
+    📧 Email: <a href="mailto:villainhackingindustry@gmail.com" style="color:#00ff41; text-decoration:underline;">villainhackingindustry@gmail.com</a><br>
+    📞 Phone: <a href="tel:+1234567890" style="color:#00ff41; text-decoration:underline;">+1 (234) 567-8900</a><br>
+    🎬 YouTube: <a href="https://www.youtube.com/channel/UClk16hQnwL6N2Nr0Et4pWaQ" target="_blank" style="color:#00ff41; text-decoration:underline;">Subscribe for Security Tips</a>
+  </p>
+  
+  <button class="cta-button">Schedule a Free Consultation</button>
+</section>
+
+<footer>
+  <p>Confidential. Professional. Legal. | © 2026 VILLAIN HACKERS | Owner: PREMCHANDRA SINGH JATAV</p>
+</footer>
+
+<script>
+  // --- Matrix rain animation ---
+  (function(){
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const chars = '0*Diakwo,@)!&$*#DNDKLMC@%^@&#$*HFJE@&#YCDTE@IBNR#UI9wd#&@Hfe3fhvn3';
+    const fontSize = 16;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(0);
+    
+    function draw() {
+      ctx.fillStyle = 'rgba(10, 14, 21, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      ctx.fillStyle = '#00ff41';
+      ctx.font = fontSize + 'px monospace';
+      ctx.globalAlpha = 0.8;
+      
+      for (let i = 0; i < drops.length; i++) {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+        ctx.fillText(char, x, y);
+        
+        if (y > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+      
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(draw);
+    }
+    
+    draw();
+    
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  })();
+
+  // CTA button functionality
+  document.querySelector('.cta-button').addEventListener('click', function() {
+    alert('Thank you for your interest! Our team will contact you within 24 hours.\n\nEmail: villainhackingindustry@gmail.com\nPhone: +1 (234) 567-8900');
+  });
+</script>
+</body>
+</html>
