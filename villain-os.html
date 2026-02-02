@@ -1,0 +1,318 @@
+<!-- ==========================
+VILLAIN OPERATING SYSTEM
+========================== -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Villain OS | VILLAIN INDUSTRY</title>
+  <style>
+    * { margin:0; padding:0; }
+    html, body { width:100%; height:100%; overflow-x:hidden; }
+    body { margin:0; font-family:'Courier New',monospace; background:#000509; color:#56be2abf; position:relative; overflow-y:auto; }
+    #matrix-canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:1; opacity:0.22; pointer-events:none; }
+    body::before { content:''; position:fixed; top:0; left:0; width:100%; height:100%; background-image: linear-gradient(0deg, transparent 24%, rgba(0,255,65,.02) 25%, transparent 26%), linear-gradient(90deg, transparent 24%, rgba(0,255,65,.02) 25%, transparent 26%); background-size:60px 60px; z-index:2; pointer-events:none; animation: gridShift 20s linear infinite; }
+    @keyframes gridShift { 0% { background-position:0 0 } 100% { background-position:60px 60px } }
+    body > * { position:relative; z-index:3; }
+    header, footer { background:linear-gradient(90deg, rgba(5,7,11,0.95), rgba(10,17,40,0.95)); padding:20px 60px; border-bottom:2px solid rgba(0,255,65,0.4); }
+    h1 { color:#00ff41; text-shadow:0 0 12px rgba(0,255,65,0.6); letter-spacing:2px; }
+    h2 { color:#00ff41; text-shadow:0 0 8px rgba(50,165,232,0.4); margin:30px 0 20px 0; }
+    h3 { color:#00ff41; margin:15px 0 10px 0; }
+    nav { display:flex; gap:15px; margin-top:15px; flex-wrap:wrap; }
+    nav a { color:#00ff41; text-decoration:none; padding:8px 15px; border:1px solid rgba(0,255,65,0.3); border-radius:4px; transition:all 0.3s; font-size:14px; }
+    nav a:hover { background:rgba(0,255,65,0.2); border-color:#00ff41; }
+    section { padding:60px; }
+    p { margin:12px 0; line-height:1.6; color:#e6e6e6; }
+    .feature-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; margin-top:30px; }
+    .feature { background:linear-gradient(135deg, rgba(17,21,33,0.8), rgba(30,40,60,0.6)); padding:25px; border-radius:8px; border:1px solid rgba(0,255,65,0.2); }
+    .feature h3 { margin-top:0; }
+    .download-box { background:rgba(0,255,65,0.1); border:2px solid rgba(0,255,65,0.4); padding:30px; border-radius:8px; margin:20px 0; text-align:center; }
+    .download-btn { display:inline-block; background:rgba(0,255,65,0.2); border:1px solid rgba(0,255,65,0.4); padding:15px 30px; margin:10px; border-radius:6px; color:#00ff41; text-decoration:none; transition:all 0.3s; }
+    .download-btn:hover { background:rgba(0,255,65,0.4); box-shadow:0 0 20px rgba(0,255,65,0.5); }
+    .tool-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:15px; margin:20px 0; }
+    .tool-item { background:rgba(17,21,33,0.7); padding:15px; border:1px solid rgba(0,255,65,0.2); border-radius:6px; }
+    .owner-card { display:flex; align-items:center; gap:20px; margin-top:15px; background:rgba(0,255,65,0.05); padding:20px; border-radius:6px; border:1px solid rgba(0,255,65,0.3); }
+    .owner-photo { width:100px; height:100px; border-radius:50%; border:2px solid rgba(0,255,65,0.6); object-fit:cover; box-shadow:0 0 15px rgba(0,255,65,0.4); }
+    .owner-info { flex:1; }
+    .owner-name { font-size:18px; color:#00ff41; font-weight:bold; text-shadow:0 0 8px rgba(0,255,65,0.6); margin:0; }
+    .owner-title { font-size:12px; color:#00aa00; margin-top:4px; }
+    .contact-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; margin-top:30px; }
+    .contact-card { background:rgba(17,21,33,0.7); padding:20px; border-radius:8px; border:1px solid rgba(0,255,65,0.2); }
+    .social-links { display:flex; gap:10px; margin-top:15px; flex-wrap:wrap; }
+    .social-links a { color:#00ff41; text-decoration:none; border:1px solid rgba(0,255,65,0.2); padding:8px 15px; border-radius:4px; transition:all 0.3s; }
+    .social-links a:hover { background:rgba(0,255,65,0.1); box-shadow:0 0 10px rgba(0,255,65,0.3); }
+  </style>
+</head>
+<body>
+<canvas id="matrix-canvas"></canvas>
+
+<header>
+  <h1>🖥️ VILLAIN OPERATING SYSTEM</h1>
+  <p style="color:#00aa00; margin-top:5px; font-size:14px;">Advanced Penetration Testing & Security Research Platform</p>
+  <nav>
+    <a href="web 1.html">Home</a>
+    <a href="cybersecurity.html">Cybersecurity Services</a>
+    <a href="dark-web.html">Dark Web & Tor</a>
+    <a href="villain-codes.html">Villain Codes</a>
+    <a href="villain-software.html">Villain Software</a>
+    <a href="villain-os.html">Villain OS</a>
+    <a href="villain-os-gui.html">Villain OS GUI</a>
+    <a href="#download">Download</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <div class="owner-card">
+    <img src="C:\Users\asus\Downloads\IMG_3609.jpg" alt="Owner" class="owner-photo">
+    <div class="owner-info">
+      <p class="owner-name">PREMCHANDRA SINGH JATAV</p>
+      <p class="owner-title">Founder & Security Expert</p>
+    </div>
+  </div>
+</header>
+
+<section>
+  <h2>About Villain OS</h2>
+  <p>Villain OS is a specialized Linux distribution designed for penetration testing, ethical hacking, and cybersecurity research. Based on a hardened kernel with 2500+ pre-installed security and hacking tools, it provides everything needed for advanced security assessments and threat analysis.</p>
+  <p>Whether you're a professional penetration tester, security researcher, or defensive security professional, Villain OS is your complete platform for comprehensive security work.</p>
+</section>
+
+<section>
+  <h2>Key Features</h2>
+  <div class="feature-grid">
+    <div class="feature">
+      <h3>🛠️ 2500+ Security & Hacking Tools</h3>
+      <p>Pre-installed collection of penetration testing, vulnerability scanning, network analysis, exploitation frameworks, and advanced hacking utilities.</p>
+    </div>
+    <div class="feature">
+      <h3>🔐 Hardened Kernel</h3>
+      <p>Security-focused kernel configuration with advanced protection mechanisms and minimal attack surface.</p>
+    </div>
+    <div class="feature">
+      <h3>🌐 Network Analysis</h3>
+      <p>Complete suite for packet capturing, protocol analysis, network mapping, and traffic inspection.</p>
+    </div>
+    <div class="feature">
+      <h3>🎯 Exploitation Framework</h3>
+      <p>Comprehensive toolkit for developing and executing security payloads and proof-of-concepts.</p>
+    </div>
+    <div class="feature">
+      <h3>🔍 Digital Forensics</h3>
+      <p>Tools for incident response, log analysis, memory forensics, and evidence collection.</p>
+    </div>
+    <div class="feature">
+      <h3>💻 Development Tools</h3>
+      <p>Built-in IDEs, compilers, debuggers, and programming language support for custom tool development.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>2500+ Pre-Installed Tools & Utilities</h2>
+  <p style="color:#00aa00; font-weight:bold; margin-bottom:20px;">Complete arsenal of security, penetration testing, and hacking tools organized by category:</p>
+  <div class="tool-grid">
+    <div class="tool-item">
+      <strong>🔍 Information Gathering:</strong> Nmap, Shodan, Recon-ng, Whois, DNS tools, OSINT frameworks
+    </div>
+    <div class="tool-item">
+      <strong>🚨 Vulnerability Scanning:</strong> OpenVAS, Nessus, Qualys, Rapid7, Acunetix
+    </div>
+    <div class="tool-item">
+      <strong>🌐 Web Testing:</strong> Burp Suite, OWASP ZAP, Nikto, SQLmap, Commix
+    </div>
+    <div class="tool-item">
+      <strong>💣 Exploitation:</strong> Metasploit, ExploitDB, Canvas, Core Impact, Beef
+    </div>
+    <div class="tool-item">
+      <strong>📡 Wireless Testing:</strong> Aircrack-ng, Hashcat, Wifite, Evil Twin, Airgeddon
+    </div>
+    <div class="tool-item">
+      <strong>🔐 Password Tools:</strong> John the Ripper, Hydra, Hashcat, L0phtCrack, Medusa
+    </div>
+    <div class="tool-item">
+      <strong>🔎 Forensics & Recovery:</strong> Sleuth Kit, Volatility, FTK, EnCase, Autopsy
+    </div>
+    <div class="tool-item">
+      <strong>🌍 Network Tools:</strong> Wireshark, Tcpdump, Netcat, Suricata, Snort
+    </div>
+    <div class="tool-item">
+      <strong>⚙️ Reverse Engineering:</strong> Ghidra, IDA Pro, Radare2, Objdump, Binutils
+    </div>
+    <div class="tool-item">
+      <strong>💻 Programming & Development:</strong> Python, Go, Rust, C++, Ruby, JavaScript, Git
+    </div>
+    <div class="tool-item">
+      <strong>🛡️ Defense & Hardening:</strong> Chkrootkit, Aide, Lynis, OpenSSL, CIS Benchmarks
+    </div>
+    <div class="tool-item">
+      <strong>📊 Analysis & Reporting:</strong> Maltego, TheHarvester, Shodan CLI, Custom Scripts
+    </div>
+    <div class="tool-item">
+      <strong>🎯 Payload Generation:</strong> msfvenom, Veil Framework, Shellcraft, Nasm
+    </div>
+    <div class="tool-item">
+      <strong>🔗 Social Engineering:</strong> SET (Social Engineer Toolkit), Phishing frameworks
+    </div>
+    <div class="tool-item">
+      <strong>⚡ Post-Exploitation:</strong> Empire, Cobalt Strike alternatives, Privilege escalation tools
+    </div>
+    <div class="tool-item">
+      <strong>🎪 Container & VM Tools:</strong> Docker, VirtualBox, QEMU, Hyper-V, KVM
+    </div>
+    <div class="tool-item">
+      <strong>📚 Database Tools:</strong> SQLite, MySQL, PostgreSQL clients, MongoDBTools
+    </div>
+    <div class="tool-item">
+      <strong>🌈 Encoding & Encryption:</strong> OpenSSL, GPG, Base64, Hex tools, Encoding frameworks
+    </div>
+    <div class="tool-item">
+      <strong>📱 Mobile Testing:</strong> Android SDK, ADB, Frida, Burp Suite Mobile, Drozer
+    </div>
+    <div class="tool-item">
+      <strong>☁️ Cloud Security:</strong> AWS CLI, GCP tools, Azure CLI, Cloud security assessment tools
+    </div>
+  </div>
+</section>
+
+<section id="download">
+  <h2>Download & Installation</h2>
+  <div class="download-box">
+    <h3 style="margin-top:0;">Get Villain OS</h3>
+    <p>Available for VMware, VirtualBox, and bare metal installation</p>
+    <div>
+      <a href="#" class="download-btn">📥 Download ISO (x64)</a>
+      <a href="#" class="download-btn">📋 Installation Guide</a>
+      <a href="#" class="download-btn">📖 Documentation</a>
+      <a href="#" class="download-btn">🐳 Docker Image</a>
+    </div>
+  </div>
+  
+  <h3>System Requirements</h3>
+  <p><strong>Minimum:</strong> 2GB RAM, 20GB Storage, Dual Core CPU</p>
+  <p><strong>Recommended:</strong> 8GB RAM, 100GB Storage, Quad Core CPU</p>
+  
+  <h3>Installation Steps</h3>
+  <ol style="margin-left:20px; line-height:2;">
+    <li>Download the ISO image</li>
+    <li>Create bootable USB or set up virtual machine</li>
+    <li>Boot and run installer</li>
+    <li>Follow on-screen prompts</li>
+    <li>Configure network settings</li>
+    <li>Complete setup and update tools</li>
+  </ol>
+</section>
+
+<section style="background:rgba(0,255,65,0.03);">
+  <h2>Getting Started</h2>
+  <p>After installation, run the setup wizard to:</p>
+  <ul style="margin-left:20px; line-height:2;">
+    <li>Configure system preferences and keyboard layout</li>
+    <li>Update all pre-installed security tools</li>
+    <li>Set up custom workspaces for different tasks</li>
+    <li>Configure network adapters and VPN</li>
+    <li>Install additional tools via package manager</li>
+  </ul>
+</section>
+
+<section id="contact" style="background:rgba(0,255,65,0.03); border-top:1px solid rgba(0,255,65,0.12);">
+  <h2>Contact & Community</h2>
+  <div class="contact-grid">
+    <div class="contact-card">
+      <p style="color:#00ff41; font-weight:bold; margin:0 0 10px 0;">👨‍💼 Owner</p>
+      <p style="margin:0;">PREMCHANDRA SINGH JATAV</p>
+      <p style="margin:10px 0 0 0; color:#56be2abf; font-size:12px;">Founder & Lead Developer</p>
+      <p style="margin:10px 0 0 0; color:#56be2abf;">Email: <a href="mailto:villainhackingindustry@gmail.com" style="color:#00ff41; text-decoration:none;">villainhackingindustry@gmail.com</a></p>
+    </div>
+    <div class="contact-card">
+      <p style="color:#00ff41; font-weight:bold; margin:0 0 10px 0;">🌐 Community</p>
+      <p style="margin:0 0 10px 0;">Join our active security community for:</p>
+      <ul style="margin:0; padding-left:20px; font-size:13px;">
+        <li>Tool tips & tricks</li>
+        <li>Security research sharing</li>
+        <li>CTF challenges</li>
+        <li>Support & troubleshooting</li>
+      </ul>
+    </div>
+    <div class="contact-card">
+      <p style="color:#00ff41; font-weight:bold; margin:0 0 15px 0;">🔗 Connect</p>
+      <div class="social-links">
+        <a href="https://www.youtube.com/channel/UClk16hQnwL6N2Nr0Et4pWaQ" target="_blank">🎬 YouTube</a>
+        <a href="https://www.instagram.com/mr_devil_villain_/" target="_blank">📱 Instagram</a>
+        <a href="https://chat.whatsapp.com/CBvP9TWgeMeC0PoM2JlXer" target="_blank">💬 WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="margin:30px 60px; padding:30px; background:linear-gradient(135deg,rgba(0,255,65,0.1),rgba(50,217,255,0.1)); border:2px solid #00ff41; border-radius:10px;">
+  <h2 style="color:#32d9ff; margin-bottom:20px;">🎨 Graphical User Interface</h2>
+  <p style="margin-bottom:20px; line-height:1.6;">Experience the complete desktop environment of Villain OS with our interactive GUI preview. Explore the boot sequence, desktop icons, taskbar, terminal emulator, security tools dashboard, file manager, system settings, and more.</p>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:15px; margin:20px 0;">
+    <div style="background:rgba(0,255,65,0.05); border:1px solid #00ff41; padding:15px; border-radius:8px; cursor:pointer; transition:all 0.3s ease;" onmouseover="this.style.background='rgba(0,255,65,0.15)'; this.style.transform='translateY(-5px)';" onmouseout="this.style.background='rgba(0,255,65,0.05)'; this.style.transform='translateY(0)';">
+      <div style="font-size:2em; margin-bottom:10px;">🖥️</div>
+      <div style="color:#00ff41; font-weight:bold; margin-bottom:8px;">Desktop Preview</div>
+      <div style="font-size:0.9em; color:#32d9ff;">Interactive desktop environment with icons and taskbar</div>
+    </div>
+    <div style="background:rgba(0,255,65,0.05); border:1px solid #00ff41; padding:15px; border-radius:8px; cursor:pointer; transition:all 0.3s ease;" onmouseover="this.style.background='rgba(0,255,65,0.15)'; this.style.transform='translateY(-5px)';" onmouseout="this.style.background='rgba(0,255,65,0.05)'; this.style.transform='translateY(0)';">
+      <div style="font-size:2em; margin-bottom:10px;">⌨️</div>
+      <div style="color:#00ff41; font-weight:bold; margin-bottom:8px;">Terminal Emulator</div>
+      <div style="font-size:0.9em; color:#32d9ff;">Live command execution with realistic output</div>
+    </div>
+    <div style="background:rgba(0,255,65,0.05); border:1px solid #00ff41; padding:15px; border-radius:8px; cursor:pointer; transition:all 0.3s ease;" onmouseover="this.style.background='rgba(0,255,65,0.15)'; this.style.transform='translateY(-5px)';" onmouseout="this.style.background='rgba(0,255,65,0.05)'; this.style.transform='translateY(0)';">
+      <div style="font-size:2em; margin-bottom:10px;">🎯</div>
+      <div style="color:#00ff41; font-weight:bold; margin-bottom:8px;">Tools Dashboard</div>
+      <div style="font-size:0.9em; color:#32d9ff;">Quick access to 12+ security tools</div>
+    </div>
+    <div style="background:rgba(0,255,65,0.05); border:1px solid #00ff41; padding:15px; border-radius:8px; cursor:pointer; transition:all 0.3s ease;" onmouseover="this.style.background='rgba(0,255,65,0.15)'; this.style.transform='translateY(-5px)';" onmouseout="this.style.background='rgba(0,255,65,0.05)'; this.style.transform='translateY(0)';">
+      <div style="font-size:2em; margin-bottom:10px;">⚙️</div>
+      <div style="color:#00ff41; font-weight:bold; margin-bottom:8px;">System Settings</div>
+      <div style="font-size:0.9em; color:#32d9ff;">Configure OS parameters and system info</div>
+    </div>
+    <div style="background:rgba(0,255,65,0.05); border:1px solid #00ff41; padding:15px; border-radius:8px; cursor:pointer; transition:all 0.3s ease;" onmouseover="this.style.background='rgba(0,255,65,0.15)'; this.style.transform='translateY(-5px)';" onmouseout="this.style.background='rgba(0,255,65,0.05)'; this.style.transform='translateY(0)';">
+      <div style="font-size:2em; margin-bottom:10px;">📁</div>
+      <div style="color:#00ff41; font-weight:bold; margin-bottom:8px;">File Manager</div>
+      <div style="font-size:0.9em; color:#32d9ff;">Browse tools, wordlists, and payloads</div>
+    </div>
+    <div style="background:rgba(0,255,65,0.05); border:1px solid #00ff41; padding:15px; border-radius:8px; cursor:pointer; transition:all 0.3s ease;" onmouseover="this.style.background='rgba(0,255,65,0.15)'; this.style.transform='translateY(-5px)';" onmouseout="this.style.background='rgba(0,255,65,0.05)'; this.style.transform='translateY(0)';">
+      <div style="font-size:2em; margin-bottom:10px;">🪟</div>
+      <div style="color:#00ff41; font-weight:bold; margin-bottom:8px;">App Windows</div>
+      <div style="font-size:0.9em; color:#32d9ff;">Metasploit and Burp Suite interfaces</div>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top:25px;">
+    <a href="villain-os-gui.html" style="background:linear-gradient(135deg,#00ff41,#32d9ff); color:#000; padding:12px 30px; text-decoration:none; border-radius:5px; font-weight:bold; display:inline-block; transition:all 0.3s ease; box-shadow:0 0 20px rgba(0,255,65,0.4);" onmouseover="this.style.boxShadow='0 0 30px rgba(0,255,65,0.6)';" onmouseout="this.style.boxShadow='0 0 20px rgba(0,255,65,0.4)';">
+      🎨 LAUNCH GUI PREVIEW
+    </a>
+  </div>
+</section>
+
+<footer style="padding:20px 60px; margin-top:30px; text-align:center;">
+  <p>Villain OS | Confidential. Professional. Legal. | © 2026 VILLAIN INDUSTRY</p>
+  <p style="font-size:12px; margin-top:10px; color:#56be2abf;">For educational and authorized security testing purposes only.</p>
+</footer>
+
+<script>
+  (function(){
+    const c = document.getElementById('matrix-canvas');
+    const ctx = c.getContext('2d');
+    function resize(){ c.width = innerWidth; c.height = innerHeight; }
+    window.addEventListener('resize', resize); resize();
+    const cols = Math.floor(c.width/16);
+    const drops = Array(cols).fill(0);
+    const chars = '01{}[]()<>VILLAINOSlinuxpentestethicalhackingcybersecurity';
+    function draw(){
+      ctx.fillStyle = 'rgba(0,5,9,0.15)';
+      ctx.fillRect(0, 0, c.width, c.height);
+      ctx.font = 'bold 14px monospace';
+      for(let i = 0; i < drops.length; i++){
+        const ch = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillStyle = i % 7 == 0 ? '#32d9ff' : '#00ff41';
+        ctx.fillText(ch, i * 16, drops[i] * 16);
+        if(drops[i] * 16 > c.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+</script>
+</body>
+</html>

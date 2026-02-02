@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VILLAIN Linux - Graphical Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
+            color: #00ff00;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(26, 26, 26, 0.98);
+            padding: 15px 30px;
+            border-bottom: 2px solid #ff0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav a {
+            color: #00ff00;
+            text-decoration: none;
+            margin: 0 20px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(100, 0, 0, 0.1));
+            border-bottom: 3px solid #ff0000;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
+            animation: titleGlow 2s ease-in-out infinite;
+            color: #ff0000;
+        }
+
+        h2 {
+            color: #ff0000;
+            margin: 30px 0 20px;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000; }
+            50% { text-shadow: 0 0 30px #ff0000, 0 0 60px #ff0000, 0 0 90px #ff0000; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        section {
+            margin: 40px 0;
+            background: rgba(30, 30, 30, 0.9);
+            padding: 30px;
+            border: 2px solid #ff0000;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+        }
+
+        /* Desktop Preview */
+        .desktop-preview {
+            background: linear-gradient(135deg, #1a1a1a, #2d1a1a);
+            border: 3px solid #ff0000;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+            position: relative;
+            aspect-ratio: 16/9;
+        }
+
+        .desktop-bg {
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 0, 0, 0.03) 2px, rgba(255, 0, 0, 0.03) 4px),
+                linear-gradient(135deg, #1a1a1a, #2d1a1a);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .desktop-icons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            align-content: start;
+        }
+
+        .desktop-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .desktop-icon:hover {
+            background: rgba(255, 0, 0, 0.1);
+            transform: scale(1.1);
+        }
+
+        .icon-graphic {
+            font-size: 2.5em;
+            margin-bottom: 8px;
+        }
+
+        .icon-label {
+            font-size: 0.8em;
+            text-align: center;
+            color: #00ff00;
+            text-shadow: 0 0 5px #ff0000;
+        }
+
+        /* Taskbar */
+        .taskbar {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.95), rgba(40, 0, 0, 0.95));
+            border-top: 2px solid #ff0000;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 -5px 20px rgba(255, 0, 0, 0.2);
+        }
+
+        .taskbar-item {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            padding: 8px 15px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #00ff00;
+        }
+
+        .taskbar-item:hover {
+            background: rgba(255, 0, 0, 0.3);
+            box-shadow: 0 0 10px #ff0000;
+        }
+
+        .system-time {
+            margin-left: auto;
+            border: 1px solid #ff0000;
+            padding: 8px 15px;
+            border-radius: 3px;
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        /* Terminal Window */
+        .terminal-window {
+            background: rgba(0, 0, 0, 0.98);
+            border: 2px solid #ff0000;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+
+        .terminal-title-bar {
+            background: linear-gradient(90deg, rgba(255, 0, 0, 0.2), rgba(100, 0, 0, 0.2));
+            padding: 10px 15px;
+            border-bottom: 1px solid #ff0000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .terminal-title {
+            font-weight: bold;
+            color: #00ff00;
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .terminal-btn {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-min { background: #ffaa00; }
+        .btn-max { background: #00ff41; }
+        .btn-close { background: #ff0000; }
+
+        .terminal-content {
+            padding: 15px;
+            font-size: 0.95em;
+            line-height: 1.8;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .terminal-line {
+            margin: 5px 0;
+            animation: typewriter 0.5s ease-out;
+        }
+
+        .prompt {
+            color: #ff0000;O
+            font-weight: bold;
+        }
+
+        .command {
+            color: #00ff00;
+        }
+
+        .output {
+            color: #0c89f6;
+        }
+
+        .error {
+            color: #ff3333;
+        }
+
+        @keyframes typewriter {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Tool Dashboard */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .tool-card {
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(100, 0, 0, 0.1));
+            border: 2px solid #ff0000;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.2), rgba(100, 0, 0, 0.2));
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgb(248, 232, 9);
+        }
+
+        .tool-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .tool-name {
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 0 0 5px #ff0000;
+        }
+
+        /* Boot Screen */
+        .boot-screen {
+            background: #000;
+            border: 3px solid #ff0000;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            box-shadow: 0 0 30px rgba(12, 236, 60, 0.969);
+        }
+
+        .boot-logo {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px #ff0000;
+            animation: pulse 1.5s ease-in-out infinite;
+            color: #e1ff00;
+        }
+
+        .boot-text {
+            font-size: 1.2em;
+            margin: 15px 0;
+            letter-spacing: 2px;
+            color: #00ff00;
+        }
+
+        .boot-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            margin: 30px 0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .boot-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #07dcc3, #cc0000);
+            width: 75%;
+            box-shadow: 0 0 10px #ff0000;
+            animation: loading 2s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0%, 100% { width: 75%; }
+            50% { width: 95%; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Application Window */
+        .app-window {
+            background: rgba(20, 20, 20, 0.95);
+            border: 2px solid #ff0000;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+
+        .app-header {
+            background: linear-gradient(90deg, rgba(255, 0, 0, 0.1), rgba(100, 0, 0, 0.1));
+            padding: 12px 15px;
+            border-bottom: 1px solid #ff0000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #00ff00;
+        }
+
+        .app-icon {
+            margin-right: 10px;
+            font-size: 1.3em;
+        }
+
+        .app-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .app-btn {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            cursor: pointer;
+            border: 1px solid #00ff41;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            transition: all 0.3s ease;
+        }
+
+        .app-btn:hover {
+            background: #350467;
+            color: #000;
+        }
+
+        .app-content {
+            padding: 20px;
+        }
+
+        /* File Manager */
+        .file-list {
+            list-style: none;
+        }
+
+        .file-item {
+            padding: 10px 15px;
+            margin: 5px 0;
+            background: rgba(255, 0, 0, 0.05);
+            border-left: 3px solid #ff0000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #0099ff;
+        }
+
+        .file-item:hover {
+            background: rgba(255, 0, 0, 0.15);
+            border-left-color: #00ff00;
+            padding-left: 20px;
+        }
+
+        .file-icon {
+            font-size: 1.2em;
+        }
+
+        .file-name {
+            flex: 1;
+            color: #00ff00;
+        }
+
+        .file-size {
+            color: #ff0000;
+            font-size: 0.9em;
+        }
+
+        /* Settings Panel */
+        .settings-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .setting-item {
+            background: rgba(255, 0, 0, 0.05);
+            border: 1px solid #ff0000;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .setting-item:hover {
+            background: rgba(255, 0, 0, 0.15);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+        }
+
+        .setting-label {
+            font-weight: bold;
+            color: #00ff00;
+            margin-bottom: 10px;
+        }
+
+        .setting-value {
+            color: #0400ff;
+            font-size: 0.9em;
+        }
+
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .contact-box {
+            background: rgba(255, 0, 0, 0.05);
+            border: 2px solid #ff0000;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .contact-box h3 {
+            color: #54de14;
+            margin-bottom: 15px;
+        }
+
+        .contact-box a {
+            color: #00ff00;
+            text-decoration: none;
+            display: block;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        .contact-box a:hover {
+            color: #ff0000;
+            text-shadow: 0 0 10px #00aeff;
+        }
+
+        /* Owner Card */
+        .owner-card {
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(100, 0, 0, 0.1));
+            border: 2px solid #ff0000;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 300px;
+            margin: 20px auto;
+        }
+
+        .owner-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid #5900ff;
+            margin-bottom: 15px;
+            object-fit: cover;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+
+        .owner-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #00ff00;
+            margin-bottom: 10px;
+        }
+
+        .owner-title {
+            color: #ff0000;
+            margin-bottom: 15px;
+        }
+
+        /* Animations */
+        @keyframes matrixRain {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(20px); }
+        }
+
+        .matrix-char {
+            animation: matrixRain 1s ease-in-out infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .desktop-icons { grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); }
+            .tool-grid { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="web 1.html"> Home</a> *
+        <a href="cybersecurity.html">🔐 Cybersecurity</a>
+        <a href="dark-web.html">🌐 Dark Web</a>
+        <a href="villain-codes.html">💻 Codes</a>
+        <a href="villain-software.html">⚙️ Software</a>
+        <a href="villain-os.html">🖥️ OS</a>
+        <a href="villain-os-gui.html">🎨 GUI</a>
+    </nav>
+
+    <header>
+        <h1>VILLAIN  - GRAPHICAL INTERFACE</h1>
+        <p style="color: #2803ff; font-size: 1.2em; margin-top: 10px;">Professional Penetration Testing Platform</p>
+    </header>
+
+    <div class="container">
+        <!-- Boot Screen -->
+        <section>
+            <h2>🚀 Boot Sequence</h2>
+            <div class="boot-screen">
+                <div class="boot-logo"> ⚡VILLAIN LINUX</div>
+                <div class="boot-text">INITIALIZING PENETRATION TESTING ENVIRONMENT...</div>
+                <div class="boot-text" style="font-size: 0.9em; color: #ff0000;">Loading Offensive Security Suite</div>
+                <div class="boot-bar">
+                    <div class="boot-progress"></div>
+                </div>
+                <div class="boot-text">BOOT SEQUENCE: 100% COMPLETE</div>
+            </div>
+        </section>
+
+        <!-- Desktop Preview -->
+        <section>
+            <h2>🖥️ Desktop Environment</h2>
+            <div class="desktop-preview">
+                <div class="desktop-bg">
+                    <div class="desktop-icons">
+                        <div class="desktop-icon">
+                            <div class="icon-graphic">🔍</div>
+                            <div class="icon-label">Reconnaissance</div>
+                        </div>
+                        <div class="desktop-icon">
+                            <div class="icon-graphic">🎯</div>
+                            <div class="icon-label">Exploitation</div>
+                        </div>
+                        <div class="desktop-icon">
+                            <div class="icon-graphic">📊</div>
+                            <div class="icon-label">Analysis</div>
+                        </div>
+                        <div class="desktop-icon">
+                            <div class="icon-graphic">🛡️</div>
+                            <div class="icon-label">Defense</div>
+                        </div>
+                        <div class="desktop-icon">
+                            <div class="icon-graphic">📁</div>
+                            <div class="icon-label">Files</div>
+                        </div>
+                        <div class="desktop-icon">
+                            <div class="icon-graphic">⚙️</div>
+                            <div class="icon-label">Settings</div>
+                        </div>
+                    </div>
+                    <div class="taskbar">
+                        <div class="taskbar-item">� Villain Linux</div>
+                        <div class="taskbar-item">🚨 Metasploit</div>
+                        <div class="taskbar-item">🌐 Wireshark</div>
+                        <div class="taskbar-item">🔐 Burp Suite</div>
+                        <div class="taskbar-item">⚡ Terminal</div>
+                        <div class="taskbar-item">🔍 Nmap</div>
+                        <div class="system-time" id="taskbar-time">14:32:58</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Terminal Emulator -->
+        <section>
+            <h2>⌨️ Terminal Emulator</h2>
+            <div class="terminal-window">
+                <div class="terminal-title-bar">
+                    <span class="terminal-title">🖥️ villain@villain:~</span>
+                    <div class="terminal-buttons">
+                        <div class="terminal-btn btn-min"></div>
+                        <div class="terminal-btn btn-max"></div>
+                        <div class="terminal-btn btn-close"></div>
+                    </div>
+                </div>
+                <div class="terminal-content">
+                    <div class="terminal-line"><span class="prompt">villain@villain:~$</span> <span class="command">whoami</span></div>
+                    <div class="terminal-line"><span class="output">villain</span></div>
+                    <div class="terminal-line"><span class="prompt">villain@Villain:~$</span> <span class="command">nmap -sV 192.168.1.0/24</span></div>
+                    <div class="terminal-line"><span class="output">Starting Nmap 7.94 ( https://nmap.org )...</span></div>
+                    <div class="terminal-line"><span class="output">Nmap scan report for 192.168.1.1</span></div>
+                    <div class="terminal-line"><span class="output">Host is up (0.0025s latency).</span></div>
+                    <div class="terminal-line"><span class="output">PORT   STATE SERVICE VERSION</span></div>
+                    <div class="terminal-line"><span class="output">22/tcp open  ssh     OpenSSH 8.4p1 Debian</span></div>
+                    <div class="terminal-line"><span class="output">80/tcp open  http    Apache httpd 2.4.46</span></div>
+                    <div class="terminal-line"><span class="prompt">villain@villain:~$</span> <span class="command">msfconsole</span></div>
+                    <div class="terminal-line"><span class="output">⚔️ Metasploit Framework v6.3.0</span></div>
+                    <div class="terminal-line"><span class="output">✓ Database connected</span></div>
+                    <div class="terminal-line"><span class="prompt">msf6 ></span> <span class="command">_</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tools Dashboard -->
+        <section>
+            <h2>🎯 Security Tools Dashboard</h2>
+            <p style="color: #32d9ff; margin-bottom: 20px;">Quick access to essential penetration testing and security tools:</p>
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <div class="tool-icon">🔍</div>
+                    <div class="tool-name">Nmap</div>
+                    <p style="font-size: 0.8em; color: #00aa00; margin-top: 8px;">Network Scanning</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🎯</div>
+                    <div class="tool-name">Metasploit</div>
+                    <p style="font-size: 0.8em; color: #00aa00; margin-top: 8px;">Exploitation</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🔐</div>
+                    <div class="tool-name">Burp Suite</div>
+                    <p style="font-size: 0.8em; color: #00aa00; margin-top: 8px;">Web Testing</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🌐</div>
+                    <div class="tool-name">Wireshark</div>
+                    <p style="font-size: 0.8em; color: #00aa00; margin-top: 8px;">Network Analysis</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🔑</div>
+                    <div class="tool-name">Hashcat</div>
+                    <p style="font-size: 0.8em; color: #00aa00; margin-top: 8px;">Password Cracking</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">📊</div>
+                    <div class="tool-name">Volatility</div>
+                    <p style="font-size: 0.8em; color: #00aa00; margin-top: 8px;">Memory Forensics</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🛡️</div>
+                    <div class="tool-name">Snort</div>
+                    <p style="font-size: 0.8em; color: #00aa00; margin-top: 8px;">IDS/IPS</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🔨</div>
+                    <div class="tool-name">Aircrack-ng</div>
+                    <p style="font-size: 0.8em; color: #00aa00; margin-top: 8px;">Wireless Testing</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">📁</div>
+                    <div class="tool-name">Autopsy</div>
+                    <p style="font-size: 0.8em; color: #00aa00; margin-top: 8px;">Digital Forensics</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">⚡</div>
+                    <div class="tool-name">SQLmap</div>
+                    <p style="font-size: 0.8em; color: #00aa00; margin-top: 8px;">SQL Injection</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🎓</div>
+                    <div class="tool-name">Ghidra</div>
+                    <p style="font-size: 0.8em; color: #00aa00; margin-top: 8px;">Reverse Engineering</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🌍</div>
+                    <div class="tool-name">TheHarvester</div>
+                    <p style="font-size: 0.8em; color: #00aa00; margin-top: 8px;">OSINT</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- File Manager -->
+        <section>
+            <h2>📁 File Manager</h2>
+            <div class="app-window">
+                <div class="app-header">
+                    <div>
+                        <span class="app-icon">📂</span>
+                        <span>File Manager - /root/pentest</span>
+                    </div>
+                    <div class="app-controls">
+                        <div class="app-btn">−</div>
+                        <div class="app-btn">⬜</div>
+                        <div class="app-btn">✕</div>
+                    </div>
+                </div>
+                <div class="app-content">
+                    <ul class="file-list">
+                        <li class="file-item">
+                            <span class="file-icon">📂</span>
+                            <span class="file-name">tools</span>
+                            <span class="file-size">4.2 GB</span>
+                        </li>
+                        <li class="file-item">
+                            <span class="file-icon">📂</span>
+                            <span class="file-name">wordlists</span>
+                            <span class="file-size">2.8 GB</span>
+                        </li>
+                        <li class="file-item">
+                            <span class="file-icon">📂</span>
+                            <span class="file-name">payloads</span>
+                            <span class="file-size">856 MB</span>
+                        </li>
+                        <li class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">config.yml</span>
+                            <span class="file-size">12 KB</span>
+                        </li>
+                        <li class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">scripts.sh</span>
+                            <span class="file-size">45 KB</span>
+                        </li>
+                        <li class="file-item">
+                            <span class="file-icon">📂</span>
+                            <span class="file-name">reports</span>
+                            <span class="file-size">5.0 GB</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Settings -->
+        <section>
+            <h2>⚙️ System Settings</h2>
+            <div class="settings-panel">
+                <div class="setting-item">
+                    <div class="setting-label">OS Version</div>
+                    <div class="setting-value">VILLAIN Linux 2025.1</div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Desktop Environment</div>
+                    <div class="setting-value">GNOME 45.0</div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Kernel</div>
+                    <div class="setting-value">6.6.0-villain1-amd64</div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Pre-installed Tools</div>
+                    <div class="setting-value">2500+</div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Security Level</div>
+                    <div class="setting-value">⭐⭐⭐⭐⭐</div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Edition</div>
+                    <div class="setting-value">Offensive Security</div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Processor</div>
+                    <div class="setting-value">Intel i7+ / AMD Ryzen</div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">RAM Required</div>
+                    <div class="setting-value">2GB Minimum</div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Storage</div>
+                    <div class="setting-value">50GB Recommended</div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">License</div>
+                    <div class="setting-value">GPL Free</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Application Windows -->
+        <section>
+            <h2>🪟 Application Windows</h2>
+            
+            <div class="app-window">
+                <div class="app-header">
+                    <div>
+                        <span class="app-icon">🎯</span>
+                        <span>Metasploit Console</span>
+                    </div>
+                    <div class="app-controls">
+                        <div class="app-btn">−</div>
+                        <div class="app-btn">⬜</div>
+                        <div class="app-btn">✕</div>
+                    </div>
+                </div>
+                <div class="app-content">
+                    <div style="background: rgba(0,0,0,0.5); padding: 10px; border-radius: 3px; margin-bottom: 10px;">
+                        <div style="color: #00ff41; margin: 5px 0;">msf6 exploit(windows/smb/ms17_010_eternalblue) ></div>
+                        <div style="color: #32d9ff; margin: 5px 0;">set RHOSTS 192.168.1.100</div>
+                        <div style="color: #00aa00; margin: 5px 0;">RHOSTS => 192.168.1.100</div>
+                        <div style="color: #32d9ff; margin: 5px 0;">exploit</div>
+                        <div style="color: #00aa00; margin: 5px 0;">✓ Exploitation successful!</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-window" style="margin-top: 20px;">
+                <div class="app-header">
+                    <div>
+                        <span class="app-icon">🔐</span>
+                        <span>Burp Suite Community - Web Security Testing</span>
+                    </div>
+                    <div class="app-controls">
+                        <div class="app-btn">−</div>
+                        <div class="app-btn">⬜</div>
+                        <div class="app-btn">✕</div>
+                    </div>
+                </div>
+                <div class="app-content">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <div style="color: #ff0000; font-weight: bold; margin-bottom: 10px;">🎯 Target Scope</div>
+                            <div style="background: rgba(0,0,0,0.5); padding: 10px; border-radius: 3px; font-size: 0.9em; border: 1px solid #ff0000;">
+                                <div style="color: #00ff00;">🞂 http://target.com</div>
+                                <div style="color: #00ff00;">🞂 https://api.target.com</div>
+                                <div style="color: #00ff00;">🞂 https://admin.target.com</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="color: #ff0000; font-weight: bold; margin-bottom: 10px;">📄 Scan Results</div>
+                            <div style="background: rgba(0,0,0,0.5); padding: 10px; border-radius: 3px; font-size: 0.9em; border: 1px solid #ff0000;">
+                                <div style="color: #ff0000;">🔴 High: SQL Injection (5)</div>
+                                <div style="color: #ffaa00;">🟡 Medium: XSS (12)</div>
+                                <div style="color: #00ff00;">🟢 Low: Info Disclosure (3)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Tray -->
+        <section>
+            <h2>🔔 System Tray & Notifications</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                <div style="background: rgba(255,0,0,0.1); border: 1px solid #ff0000; padding: 15px; border-radius: 5px;">
+                    <div style="color: #00ff00; font-weight: bold;">✓ All Systems Online</div>
+                    <div style="color: #ff0000; font-size: 0.9em; margin-top: 5px;">Network, Firewall, IDS Active</div>
+                </div>
+                <div style="background: rgba(255,170,0,0.1); border: 1px solid #ffaa00; padding: 15px; border-radius: 5px;">
+                    <div style="color: #ffaa00; font-weight: bold;">⚠️ Update Available</div>
+                    <div style="color: #00ff00; font-size: 0.9em; margin-top: 5px;">Security patches: 5 pending</div>
+                </div>
+                <div style="background: rgba(255,0,0,0.1); border: 1px solid #ff0000; padding: 15px; border-radius: 5px;">
+                    <div style="color: #00ff00; font-weight: bold;">📊 System Status</div>
+                    <div style="color: #ff0000; font-size: 0.9em; margin-top: 5px;">CPU: 22% | RAM: 38% | Disk: 58%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer with Contact -->
+        <section>
+            <h2 style="text-align: center;">📧 Contact & Community</h2>
+            <div class="owner-card">
+                <img src="C:\Users\asus\Downloads\IMG_3609.jpg" alt="Owner" class="owner-image">
+                <div class="owner-name">PREMCHANDRA SINGH JATAV</div>
+                <div class="owner-title">VILLAIN Linux Penetration Tester & Security Specialist</div>
+                <div style="margin-top: 15px; font-size: 0.9em; color: #00ff00;">
+                    <div style="margin: 10px 0;">🎓 Ethical Hacker | Offensive Security Expert</div>
+                    <div style="margin: 10px 0;">💻 Penetration Testing Professional | Open Source Contributor</div>
+                </div>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-box">
+                    <h3>📧 Email</h3>
+                    <a href="mailto:villainhackingindustry@gmail.com">villainhackingindustry@gmail.com</a>
+                </div>
+                <div class="contact-box">
+                    <h3>💬 WhatsApp Community</h3>
+                    <a href="https://chat.whatsapp.com/CBvP9TWgeMeC0PoM2JlXer" target="_blank">Join Community Group</a>
+                    <a href="https://chat.whatsapp.com/CBvP9TWgeMeC0PoM2JlXer" target="_blank">👥 Active Members: 2500+</a>
+                </div>
+                <div class="contact-box">
+                    <h3>📺 YouTube</h3>
+                    <a href="https://www.youtube.com/channel/UClk16hQnwL6N2Nr0Et4pWaQ" target="_blank">Subscribe Channel</a>
+                    <a href="https://www.youtube.com/channel/UClk16hQnwL6N2Nr0Et4pWaQ" target="_blank">📹 Tutorials & Demos</a>
+                </div>
+                <div class="contact-box">
+                    <h3>📱 Instagram</h3>
+                    <a href="https://www.instagram.com/mr_devil_villain_/" target="_blank">Follow Account</a>
+                    <a href="https://www.instagram.com/mr_devil_villain_/" target="_blank">📸 Daily Updates</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Update taskbar time
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('taskbar-time').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // Add click effects to tool cards
+        document.querySelectorAll('.tool-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const toolName = this.querySelector('.tool-name').textContent;
+                alert(`Launching ${toolName}...\n\nThis is a graphical preview of Villain OS`);
+            });
+        });
+
+        // Add click effects to desktop icons
+        document.querySelectorAll('.desktop-icon').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const label = this.querySelector('.icon-label').textContent;
+                alert(`Opening ${label} module...`);
+            });
+        });
+
+        // Add click effects to taskbar items
+        document.querySelectorAll('.taskbar-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const app = this.textContent.trim();
+                alert(`Bringing ${app} to foreground...`);
+            });
+        });
+    </script>
+</body>
+</html>
