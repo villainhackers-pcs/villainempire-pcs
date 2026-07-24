@@ -1,126 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Villain Hackers</title>
-  <style>
-    :root {
-      --bg: #090d16;
-      --card-bg: #111827;
-      --accent: #10b981;
-      --accent-glow: rgba(16, 185, 129, 0.2);
-      --text: #f3f4f6;
-      --text-muted: #9ca3af;
-      --border: #1f2937;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Villain Hackers | Home</title>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    }
+    <!-- Open Graph (OG) Meta Tags -->
+    <meta property="og:title" content="Villain Hackers">
+    <meta property="og:description" content="Welcome to Villain Hackers. Explore projects, research, and security updates.">
+    <meta property="og:image" content="https://villainhackers.com/og-image.png">
+    <meta property="og:url" content="https://villainhackers.com/">
+    <meta property="og:type" content="website">
 
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Villain Hackers">
+    <meta name="twitter:description" content="Welcome to Villain Hackers. Explore projects, research, and security updates.">
+    <meta name="twitter:image" content="https://villainhackers.com/og-image.png">
 
-    .container {
-      max-width: 650px;
-      width: 100%;
-      background-color: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 48px 32px;
-      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.6);
-      text-align: center;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background-color: var(--accent-glow);
-      color: var(--accent);
-      border: 1px solid var(--accent);
-      padding: 6px 16px;
-      border-radius: 9999px;
-      font-size: 0.875rem;
-      font-weight: 600;
-      margin-bottom: 24px;
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      background-color: var(--accent);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--accent);
-    }
-
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      margin-bottom: 16px;
-    }
-
-    p {
-      color: var(--text-muted);
-      font-size: 1.125rem;
-      line-height: 1.6;
-      margin-bottom: 32px;
-    }
-
-    .btn {
-      display: inline-block;
-      background-color: var(--accent);
-      color: #000;
-      font-weight: 700;
-      padding: 14px 28px;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: all 0.2s ease;
-    }
-
-    .btn:hover {
-      opacity: 0.9;
-      transform: translateY(-2px);
-    }
-
-    footer {
-      margin-top: 48px;
-      color: var(--text-muted);
-      font-size: 0.875rem;
-    }
-  </style>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        nav {
+            background-color: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav a {
+            color: #c9d1d9;
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-weight: 500;
+        }
+        nav a:hover { color: #58a6ff; }
+        .hero {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+        .container {
+            max-width: 650px;
+            padding: 2.5rem;
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+        h1 { color: #58a6ff; font-size: 2.5rem; margin-bottom: 1rem; }
+        p { color: #8b949e; line-height: 1.6; font-size: 1.1rem; margin-bottom: 1.5rem; }
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #238636;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+        .btn:hover { background-color: #2ea043; }
+    </style>
 </head>
 <body>
 
-  <main class="container">
-    <div class="status-badge">
-      <span class="status-dot"></span> Domain Verified
-    </div>
-    
-    <h1>Villain Hackers</h1>
-    <p>Welcome to <strong>villainhackers.com</strong>. Our GitHub Pages domain setup is complete and our official site is online.</p>
-    
-    <a href="https://github.com/villainhackers-pcs" class="btn" target="_blank" rel="noopener noreferrer">
-      Visit GitHub Profile
-    </a>
-  </main>
+    <nav>
+        <div style="font-weight: bold; color: #58a6ff;">Villain Hackers</div>
+        <div>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="projects.html">Projects</a>
+            <a href="research.html">Research</a>
+            <a href="security.html">Security</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
 
-  <footer>
-    &copy; 2026 Villain Hackers. All rights reserved.
-  </footer>
+    <main class="hero">
+        <div class="container">
+            <h1>Villain Hackers</h1>
+            <p>Welcome to the official portal of Villain Hackers. Explore our cybersecurity research, open-source projects, and security tools.</p>
+            <a href="projects.html" class="btn">Explore Projects</a>
+        </div>
+    </main>
 
 </body>
 </html>
