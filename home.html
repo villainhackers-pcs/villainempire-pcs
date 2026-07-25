@@ -48,6 +48,8 @@
     body > * { position:relative; z-index:3; }
     
     header, footer { background:#05070b; padding:20px 60px; border-bottom:1px solid rgba(0,255,65,0.3); box-shadow:0 0 20px rgba(0,255,65,0.1); }
+    .header-top { display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+    .site-logo { width:90px; height:90px; object-fit:contain; border-radius:12px; border:1px solid rgba(0,255,65,0.3); box-shadow:0 0 15px rgba(0,255,65,0.2); background:#020304; padding:6px; }
     section { padding:60px; position:relative; z-index:3; }
     h1 { text-shadow:0 0 10px #00ff41, 0 0 20px #f911e6; color:#00ff41; letter-spacing:2px; }
     h2 { text-shadow:0 0 8px #32a5e8; color:#00ff41; margin-bottom:20px; }
@@ -81,7 +83,12 @@
 <!-- Matrix rain canvas -->
 <canvas id="matrix-canvas"></canvas>
 <header>
-  <h1>VILLAIN HACKERS</h1>
+  <div class="header-top">
+    <img src="https://raw.githubusercontent.com/villainhackers-pcs/villainempire-pcs/main/villain%20hackers.webp" alt="Villain Hackers logo" class="site-logo" />
+    <div>
+      <h1>VILLAIN HACKERS</h1>
+    </div>
+  </div>
   <nav>
     <a href="cybersecurity.html">Cybersecurity Services</a>
     <a href="dark-web.html">Dark Web & Tor</a>
