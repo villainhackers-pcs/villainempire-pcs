@@ -46,6 +46,8 @@
     body > * { position:relative; z-index:3; }
     
     header { background:#05070b; padding:20px 60px; border-bottom:1px solid rgba(0,255,65,0.3); box-shadow:0 0 20px rgba(0,255,65,0.1); }
+    .header-top { display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+    .site-logo { width:90px; height:90px; object-fit:contain; border-radius:12px; border:1px solid rgba(0,255,65,0.3); box-shadow:0 0 15px rgba(0,255,65,0.2); background:#020304; padding:6px; }
     footer { background:#05070b; padding:20px 60px; border-top:1px solid rgba(0,255,65,0.3); box-shadow:0 0 20px rgba(0,255,65,0.1); }
     section { padding:60px; position:relative; z-index:3; border-bottom:1px solid rgba(0,255,65,0.2); }
     
@@ -98,10 +100,15 @@
 <canvas id="matrix-canvas"></canvas>
 
 <header>
-  <h1>🔍 WEB APPLICATION VULNERABILITY AUDIT</h1>
-  <p style="color:#00aa00; margin-top:5px;">Ethical Hacking & Security Assessment</p>
+  <div class="header-top">
+    <img src="https://raw.githubusercontent.com/villainhackers-pcs/villainempire-pcs/main/villain%20hackers.webp" alt="Villain Hackers logo" class="site-logo" />
+    <div>
+      <h1>🔍 WEB APPLICATION VULNERABILITY AUDIT</h1>
+      <p style="color:#00aa00; margin-top:5px;">Ethical Hacking & Security Assessment</p>
+    </div>
+  </div>
   <nav>
-    <a href="home.html"> Home</a>
+    <a href="home.html">← Back Home</a>
     <a href="cybersecurity.html">Services</a>
     <a href="dark-web.html">Dark Web & Tor</a>
     <a href="#methodology">Methodology</a>
@@ -329,8 +336,8 @@
   
   <h3>Contact VILLAIN HACKERS Today</h3>
   <p style="margin-top:15px;">
-    📧 Email: <a href="mailto:villainhackingindustry@gmail.com" style="color:#00ff41; text-decoration:underline;">villainhackingindustry@gmail.com</a><br>
-    📞 Phone: <a href="tel:+1234567890" style="color:#00ff41; text-decoration:underline;">+1 (234) 567-8900</a><br>
+    📧 Email: <a href="mailto:villainhackingindustry@gmail.com" style="color:#ff1900; text-decoration:underline;">villainhackingindustry@gmail.com</a><br>
+    📞 Phone: <a href="tel:+1 1234567890" style="color:#2600ff; text-decoration:underline;">+91 93013 18640 </a><br>
     🎬 YouTube: <a href="https://www.youtube.com/channel/UClk16hQnwL6N2Nr0Et4pWaQ" target="_blank" style="color:#00ff41; text-decoration:underline;">Subscribe for Security Tips</a>
   </p>
   
@@ -350,7 +357,7 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
-    const chars = '0*Diakwo,@)!&$*#DNDKLMC@%^@&#$*HFJE@&#YCDTE@IBNR#UI9wd#&@Hfe3fhvn3';
+    const chars = '0n *Diakwo,@)!&$*#DNDKMC@%^@&#$*********** @&#YCDTE@IBNR#UI9wd#&@Hfe3fhvn3';
     const fontSize = 16;
     const columns = Math.floor(canvas.width / fontSize);
     const drops = Array(columns).fill(0);
@@ -394,4 +401,3 @@
 </script>
 </body>
 </html>
-
